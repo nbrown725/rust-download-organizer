@@ -1,4 +1,4 @@
-# File Organizer
+# Rust File Organizer
 
 A small file organizer program I made to learn rust. It organizes the following extensions into these directories:
 
