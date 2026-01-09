@@ -52,6 +52,10 @@ fn process_file(file: fs::DirEntry, ext_map: &HashMap<&str, &str>, source_dir: &
         // Get extension type
         let ext = (&name_string).split(".").last().expect("Error: Failed to split filename String");
 
+        if ext == "part" || ext == "crdownload" {
+            return;
+        }
+
         // Get destination directory
         let destination_dir = match ext_map.get(ext) {
             Some(p) => home_dir.join(p),
@@ -104,8 +108,10 @@ fn main() {
 
     let source_dir = match args().skip(1).next() {
         Some(arg) => PathBuf::from(arg),
-        None => PathBuf::from("Downloads"),
+        None => home_dir.join("Downloads"),
     };
+
+    println!("{:?}", source_dir);
 
     let files = fs::read_dir(&source_dir).expect("Error: Failed to read Download directory");
 
