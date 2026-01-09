@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+import os
+
+extensions = {
+    'Pictures': ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'tiff', 'heif', 'psd', 'raw', 'bmp', 'ico', 'ai'],
+    'Videos': ['mp4', 'mov', 'webm', 'mkv', 'flv', 'ogg', 'avi', 'm4p', 'mv4', 'mpg', 'mpeg'],
+    'Music': ['mp3', 'wav', 'aiff', 'flac', 'ogg', 'opus'],
+    'Documents': ['pdf', 'docx', 'pptx', 'csv']
+}
+
+ext_map = {}
+
+for path in extensions:
+    for ext in extensions.get(path):
+        ext_map[ext] = path
+
+main_path = '/home/nitechno/'
+download_path = os.path.join(main_path, 'Downloads/')
+
+files = os.listdir(download_path)
+
+for file in files:
+    if '.' in file:
+        ext = file.split('.').pop().lower()
+        path = ext_map.get(ext)
+
+        if not path:
+            continue
+        else:
+            path = os.path.join(main_path, path)
+
+        if not os.path.exists(path):
+            os.mkdir(path)
+
+        destination = os.path.join(path, file)
+
+        if not os.path.exists(destination):
+            os.rename(os.path.join(download_path, file), destination)
+            print(f'Moved {file} → {path}')
+        else:
+            print(f'Conflict: {file} aready exists in {path}')
