@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "download-organizer"
+name = "rust-file-organizer"
 version = "0.1.0"
