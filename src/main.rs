@@ -111,8 +111,6 @@ fn main() {
         None => home_dir.join("Downloads"),
     };
 
-    println!("{:?}", source_dir);
-
     let files = fs::read_dir(&source_dir).expect("Error: Failed to read Download directory");
 
     for f in files {
