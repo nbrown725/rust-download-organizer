@@ -33,10 +33,19 @@ fn move_file(source: &PathBuf, destination: &PathBuf, name_string: &String, dest
 
 fn check_file(file: &fs::DirEntry, name_string: &String) -> bool {
     if file.file_type().expect("Error: Failed to check file type").is_file() {
+    
+    if name_string.ends_with(".part") || name_string.ends_with(".crdownload") {
+            return false;
+        }
 
-        // Make sure there's some '.ext'
-        if (&name_string).contains(".") {
-
+        // Check for placeholder metadata
+        if let Ok(metadata) = file.metadata() {
+            if metadata.len() == 0 {
+                return false;
+            }
+        }
+        
+        if name_string.contains(".") {
             return true;
         }
     }
@@ -51,10 +60,6 @@ fn process_file(file: fs::DirEntry, ext_map: &HashMap<&str, &str>, source_dir: &
     if check_file(&file, &name_string) {
         // Get extension type
         let ext = (&name_string).split(".").last().expect("Error: Failed to split filename String");
-
-        if ext == "part" || ext == "crdownload" {
-            return;
-        }
 
         // Get destination directory
         let destination_dir = match ext_map.get(ext) {
